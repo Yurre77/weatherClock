@@ -10,7 +10,9 @@
 //Define constants
 #define FONTSIZE 8
 //change to a NTP server in your region
-#define NTPSERVER "pool.ntp.org"
+#define NTPSERVER "0.nl.pool.ntp.org"
+//change according to your timezone
+#define TIMEOFFSET 7200
 
 // static IP definitions
 IPAddress staticIP(192, 168, 34, 34);
@@ -30,6 +32,8 @@ void setup() {
   Serial.begin(9600);
   dht.begin();
   u8g2.begin();
+  timeClient.begin();
+  timeClient.setTimeOffset(TIMEOFFSET);
   connectWiFi();
   u8g2.setFont(u8g2_font_logisoso16_tf);
   Serial.println("Setup complete");
@@ -40,6 +44,7 @@ void loop() {
   float temp = 0.0;
   float hum = 0.0;
 
+  timeClient.update();
   drawBorders();
   readDHT(&hum, &temp);
   drawSensor(temp, hum);
@@ -90,9 +95,19 @@ void drawTime() {
   int screenWidth = u8g2.getDisplayWidth();
   int screenHeight = u8g2.getDisplayHeight();
 
-  String time = String(timeClient.getHours()) + ":" + String(timeClient.getMinutes());
+  String hours = String(timeClient.getHours());
+  if(timeClient.getHours() < 10){ 
+    hours = "0" + hours;
+  }
+  String minutes = String(timeClient.getMinutes());
+  if(timeClient.getMinutes() < 10){
+    minutes = "0" + minutes;
+  }
 
-  u8g2.drawStr(FONTSIZE,((screenHeight/2)-FONTSIZE), time.c_str());
+  String time = hours + ":" + minutes;
+
+  u8g2.drawStr(FONTSIZE,((screenHeight/2)-FONTSIZE), "Time:");
+  u8g2.drawStr(FONTSIZE, (screenHeight-FONTSIZE), time.c_str());
 }
 
 void connectWiFi(){
