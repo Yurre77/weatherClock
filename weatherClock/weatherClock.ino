@@ -28,6 +28,7 @@ void loop() {
   drawBorders();
   readDHT(&hum, &temp);
   drawSensor(temp, hum);
+  drawTime();
 
   u8g2.sendBuffer();
   delay(10000);
@@ -63,9 +64,16 @@ void drawSensor(float temp, float hum) {
   int screenWidth = u8g2.getDisplayWidth();
   int screenHeight = u8g2.getDisplayHeight();
 
-  String tempStr = string(temp) + " C";
-  String humStr = string(hum) + " %";
+  String tempStr = String(temp) + "C";
+  String humStr = String(hum) + "%";
 
   u8g2.drawStr(((screenWidth/2)+(FONTSIZE/2)), ((screenHeight/2)-FONTSIZE), tempStr.c_str());
   u8g2.drawStr(((screenWidth/2)+(FONTSIZE/2)), (screenHeight-FONTSIZE), humStr.c_str());
+}
+
+void drawTime() {
+  int screenWidth = u8g2.getDisplayWidth();
+  int screenHeight = u8g2.getDisplayHeight();
+  
+  u8g2.drawStr(0,((screenHeight/2)-FONTSIZE), "12:50");
 }
