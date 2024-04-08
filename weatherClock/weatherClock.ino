@@ -55,6 +55,7 @@ void loop() {
   u8g2.clear();
 }
 
+//function to get data from a DHT11
 void readDHT(float* humidity, float* temperature) {
   float h = dht.readHumidity();
   float t = dht.readTemperature();
@@ -68,6 +69,7 @@ void readDHT(float* humidity, float* temperature) {
   }
 }
 
+//function to draw white borders around information
 void drawBorders() {
   int screenWidth = u8g2.getDisplayWidth();
   int screenHeight = u8g2.getDisplayHeight();
@@ -80,6 +82,7 @@ void drawBorders() {
   Serial.println("drawn borders");
 }
 
+//function to draw sensor data on the screen
 void drawSensor(float temp, float hum) {
   int screenWidth = u8g2.getDisplayWidth();
   int screenHeight = u8g2.getDisplayHeight();
@@ -91,6 +94,7 @@ void drawSensor(float temp, float hum) {
   u8g2.drawStr(((screenWidth/2)+(FONTSIZE/2)), (screenHeight-FONTSIZE), humStr.c_str());
 }
 
+//function to write time on the screen
 void drawTime() {
   int screenWidth = u8g2.getDisplayWidth();
   int screenHeight = u8g2.getDisplayHeight();
@@ -110,6 +114,7 @@ void drawTime() {
   u8g2.drawStr(FONTSIZE, (screenHeight-FONTSIZE), time.c_str());
 }
 
+//function to connect to wifi
 void connectWiFi(){
   // configure the WiFi mode (default = STA + AP)
   WiFi.mode(WIFI_STA);
